@@ -22,6 +22,7 @@
 - [pluck](#pluck)
 - [fromEvent](#fromevent)
 - [interval](#interval)
+- [debounce](#debounce)
 - [sum](#sum)
 - [count](#count)
 - [take](#take)
@@ -350,6 +351,26 @@ for await (const item of interval(1000)) {
     if(item >= 10) {
         break;         // stop the iterable
     }
+}
+```
+
+## Debounce
+
+Prevents emitting of values until the promise returned by the timer is resolved.
+When the timer resolves, emit the latest value from the async iterator.
+
+```javascript
+import { debounce } from "axax/es5/debounce";
+import { interval } from "axax/es5/interval";
+import { take } from "axax/es5/take";
+import { wait} from "axax/es5/wait";
+
+const timer = () => wait(100);
+const counterToTenFiveMsIntervals = take(10)(interval(5));
+const debounced = debounce(timer)(counterToTenFiveMsIntervals);
+
+for await (const item of debounced) {
+  console.log(item); // prints 1, 3, 5, 7, 9
 }
 ```
 
